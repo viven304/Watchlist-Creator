@@ -29,9 +29,9 @@ public class Main {
                     System.out.println("Enter movie name");
                     moviename = scanner.nextLine();
                     for (Movie m : horror.GenreMovies) {
-                        if (moviename.equals(m.name)) {
+                        if (moviename.equals(m.getName())) {
                             System.out.println("Found the movie!");
-                            System.out.println("The movie is called " + m.name + " and has a rating of " + m.rating);
+                            System.out.println("The movie is called " + m.getName() + " and has a rating of " + m.getRating());
                         }
                     }
                 }
@@ -41,9 +41,9 @@ public class Main {
                     System.out.println("Enter movie name");
                     moviename = scanner.nextLine();
                     for (Movie m : scifi.GenreMovies) {
-                        if (moviename.equals(m.name)) {
+                        if (moviename.equals(m.getName())) {
                             System.out.println("Found the movie!");
-                            System.out.println("The movie is called " + m.name + " and has a rating of " + m.rating);
+                            System.out.println("The movie is called " + m.getName() + " and has a rating of " + m.getRating());
                         }
 
                         
