@@ -208,6 +208,13 @@ public class Watchlist implements Load, Save {
                                     } else {
                                         this.addTitle(ep);
                                         System.out.println("Successful!");
+                                        String choice2 = "";
+                                        System.out.println("Would you like to know far you are in this show?");
+                                        choice2 = scanner.nextLine();
+                                        if (choice2.equals("yes")) {
+                                            howFarAlong(ts);
+                                        }
+
                                     }
                                 } else if (answerchoice.equals("2")) {
                                     if (this.getTitles().contains(ts)) {
@@ -229,7 +236,11 @@ public class Watchlist implements Load, Save {
                 break;
             }
         }
-        }
+    }
+
+    public void howFarAlong(TVShow tvShow) {
+        System.out.println(tvShow.howFarAlong(this) + "%");
     }
 
 
+}

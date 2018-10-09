@@ -19,6 +19,7 @@ public class Main{
     TVShow twd = new TVShow(86, "The Walking Dead", "Horror");
     ArrayList<Episode> twdeps = new ArrayList<>();
     Episode negan = new Episode(80, "Negan", "Horror");
+    Episode welost = new Episode(70, "We Lost", "Horror");
     TVShow got = new TVShow(95, "Game of Thrones", "Fantasy");
     ArrayList<Episode> goteps = new ArrayList<>();
     Episode bob = new Episode(99, "Battle of Bastards", "Fantasy");
@@ -29,6 +30,7 @@ public class Main{
         movieDatabase.addMovie(interstellar);
         Scanner scanner = new Scanner(System.in);
         twdeps.add(negan);
+        twdeps.add(welost);
         twd.setEpisodes(twdeps);
         goteps.add(bob);
         got.setEpisodes(goteps);

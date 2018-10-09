@@ -20,6 +20,16 @@ public class TVShow extends VisualEntertainment {
         this.episodes = episodes;
     }
 
+    public float howFarAlong(Watchlist watchlist) {
+        float numofeps = 0;
+        for (Episode ep: episodes) {
+            if (watchlist.getTitles().contains(ep)) {
+                numofeps++;
+            }
+        }
+        return ((numofeps/(episodes.size())) * 100);
+    }
+
 
     @Override
     protected void displaydetails() {
@@ -28,6 +38,7 @@ public class TVShow extends VisualEntertainment {
         System.out.println("Rating: " + super.rating);
         System.out.println("Episodes:" + episodes.size());
     }
+
 
 
 
