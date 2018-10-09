@@ -8,5 +8,7 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="apiguardian-api-1.0.0" level="project" />
+    <orderEntry type="library" name="jxl" level="project" />
+    <orderEntry type="library" name="opencsv-4.2" level="project" />
   </component>
 </module>

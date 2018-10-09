@@ -1,70 +1,69 @@
 package ui;
 
-import movies.Movie;
-import movies.Genre;
+import movies.*;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 
-public class Main {
+
+public class Main{
     Scanner scanner = new Scanner(System.in);
     Movie conjuring = new Movie(86, "Conjuring", "Genre");
     Genre horror = new Genre();
     Movie interstellar = new Movie(71, "Interstellar", "Sci-Fi");
     Genre scifi = new Genre();
+    MovieDatabase movieDatabase = new MovieDatabase();
+    Watchlist watchlist = new Watchlist();
+    TVShow twd = new TVShow(86, "The Walking Dead", "Horror");
+    ArrayList<Episode> twdeps = new ArrayList<>();
+    Episode negan = new Episode(80, "Negan", "Horror");
+    TVShow got = new TVShow(95, "Game of Thrones", "Fantasy");
+    ArrayList<Episode> goteps = new ArrayList<>();
+    Episode bob = new Episode(99, "Battle of Bastards", "Fantasy");
+    TVShowDatabase tvShowDatabase = new TVShowDatabase();
 
-    public Main() {
-
-        String moviegenre = "";
-        horror.setGenreName("Horror");
-        horror.addMovie(conjuring);
-        scifi.setGenreName("Sci-Fi");
-        scifi.addMovie(interstellar);
+    public Main() throws IOException{
+        movieDatabase.addMovie(conjuring);
+        movieDatabase.addMovie(interstellar);
+        Scanner scanner = new Scanner(System.in);
+        twdeps.add(negan);
+        twd.setEpisodes(twdeps);
+        goteps.add(bob);
+        got.setEpisodes(goteps);
+        tvShowDatabase.addTVShow(twd);
+        tvShowDatabase.addTVShow(got);
+        String choice = "";
         while (true) {
-            System.out.println("Enter movie genre");
-            moviegenre = scanner.nextLine();
-            if (moviegenre.equals("Horror")) {
-                String moviename = "";
-                while (true) {
-                    System.out.println("Enter movie name");
-                    moviename = scanner.nextLine();
-                    for (Movie m : horror.GenreMovies) {
-                        if (moviename.equals(m.getName())) {
-                            System.out.println("Found the movie!");
-                            System.out.println("The movie is called " + m.getName() + " and has a rating of " + m.getRating());
-                        }
-                    }
-                }
-            } else if (moviegenre.equals("Sci-Fi")) {
-                String moviename = "";
-                while (true) {
-                    System.out.println("Enter movie name");
-                    moviename = scanner.nextLine();
-                    for (Movie m : scifi.GenreMovies) {
-                        if (moviename.equals(m.getName())) {
-                            System.out.println("Found the movie!");
-                            System.out.println("The movie is called " + m.getName() + " and has a rating of " + m.getRating());
-                        }
-
-                        
-                    }
-                }
-            } else if (moviegenre.equals("quit")) {
+            System.out.println("Choose");
+            System.out.println("[1] Load Watchlist [2] New Watchlist [3] quit");
+            choice = scanner.nextLine();
+            if (choice.equals("1")) {
+                watchlist.load(movieDatabase, tvShowDatabase, "inputfile.txt");
+                watchlist.addingTitlesToWatchlistLoop(movieDatabase, tvShowDatabase);
+            } else if (choice.equals("2")) {
+                watchlist.namingWatchlist();
+                watchlist.addingTitlesToWatchlistLoop(movieDatabase, tvShowDatabase);
+            }
+            else if (choice.equals("3")) {
                 break;
             }
-            System.out.println("thank you for using the Movie Database");
         }
-}
+        watchlist.save("inputfile.txt");
+        System.out.println("thanks for using the WatchListCreator");
+    }
 
 
 
 
 
-
-    public static void main(String[] args) {
-    new Main();
+    public static void main(String[] args) throws IOException {
+        new Main();
     }
 }
+
+
 
 
 
