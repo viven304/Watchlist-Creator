@@ -1,33 +1,41 @@
 package movies;
 
+import java.lang.reflect.Array;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class TVShow extends VisualEntertainment {
-    private ArrayList<Episode> episodes;
+    private Map<String, List<Episode>> episodes;
 
     public TVShow(float rating, String name, String genre) {
         super(rating, name, genre);
-        this.episodes = new ArrayList<>();
+        this.episodes = new HashMap<String, List<Episode>>();
     }
 
-    public ArrayList<Episode> getEpisodes(){
+    public Map<String, List<Episode>> getEpisodes(){
         return this.episodes;
     }
 
-    public void setEpisodes(ArrayList<Episode> episodes) {
-        this.episodes = episodes;
-    }
+    public void setEpisodes(String season, ArrayList<Episode> episodes) {
+            this.episodes.put(season, episodes);
+        }
+
 
     public float howFarAlong(Watchlist watchlist) {
         float numofeps = 0;
-        for (Episode ep: episodes) {
-            if (watchlist.getTitles().contains(ep)) {
-                numofeps++;
+        float size = 0;
+        for (VisualEntertainment ve: watchlist.getTitles()) {
+            if (episodes.containsValue(ve)) {
+             numofeps++;
             }
         }
-        return ((numofeps/(episodes.size())) * 100);
+        for (List<Episode> le: episodes.values()) {
+            for (Episode e: le) {
+                size++;
+            }
+        }
+
+        return ((numofeps)/(size) * 100);
     }
 
 
@@ -39,7 +47,17 @@ public class TVShow extends VisualEntertainment {
         System.out.println("Episodes:" + episodes.size());
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TVShow tvShow = (TVShow) o;
+        return Objects.equals(episodes, tvShow.episodes);
+    }
 
+    @Override
+    public int hashCode() {
 
-
+        return Objects.hash(episodes);
+    }
 }

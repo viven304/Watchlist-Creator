@@ -1,5 +1,6 @@
 package ui;
 
+import exceptions.AlreadyInWatchlist;
 import movies.*;
 
 import java.io.IOException;
@@ -31,9 +32,9 @@ public class Main{
         Scanner scanner = new Scanner(System.in);
         twdeps.add(negan);
         twdeps.add(welost);
-        twd.setEpisodes(twdeps);
+        twd.setEpisodes("5",twdeps);
         goteps.add(bob);
-        got.setEpisodes(goteps);
+        got.setEpisodes("6", goteps);
         tvShowDatabase.addTVShow(twd);
         tvShowDatabase.addTVShow(got);
         String choice = "";
@@ -42,11 +43,15 @@ public class Main{
             System.out.println("[1] Load Watchlist [2] New Watchlist [3] quit");
             choice = scanner.nextLine();
             if (choice.equals("1")) {
-                watchlist.load(movieDatabase, tvShowDatabase, "inputfile.txt");
-                watchlist.addingTitlesToWatchlistLoop(movieDatabase, tvShowDatabase);
+                try {
+                    watchlist.load(movieDatabase, tvShowDatabase, "inputfile.txt");
+                } catch (AlreadyInWatchlist alreadyInWatchlist) {
+                }
+                    watchlist.addingTitlesToWatchlistLoop(movieDatabase, tvShowDatabase);
             } else if (choice.equals("2")) {
                 watchlist.namingWatchlist();
-                watchlist.addingTitlesToWatchlistLoop(movieDatabase, tvShowDatabase);
+                    watchlist.addingTitlesToWatchlistLoop(movieDatabase, tvShowDatabase);
+
             }
             else if (choice.equals("3")) {
                 break;

@@ -23,4 +23,5 @@ protected void displaydetails() {
     System.out.println("Rating: " + super.rating);
     }
 
+
 }

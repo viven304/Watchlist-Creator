@@ -25,16 +25,15 @@ public class TVShowDatabase {
         return result;
     }
 
-    public Episode searchforTVEpisodeByName(String name) {
-        Episode result = new Episode(0, "", "");
-        for (TVShow tvs: shows) {
-            for (Episode ep: tvs.getEpisodes())
-            if (ep.equals(name)) {
-                result = ep;
-            }
-        }
-        return result;
-    }
+//    public Episode searchforTVEpisodeByName(String name) {
+//        Episode result = new Episode(0, "", "");
+//        for (TVShow tvs: shows) {
+//            if (tvs.getEpisodes().containsKey(name)) {
+//                result = tvs.getEpisodes().get(name);
+//            }
+//        }
+//        return result;
+//    }
 
 
 }

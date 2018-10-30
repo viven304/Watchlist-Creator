@@ -1,5 +1,8 @@
 package movies;
 
+import exceptions.AlreadyInWatchlist;
+import exceptions.NotInTheWatchlist;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -7,12 +10,12 @@ public abstract class VisualEntertainment {
     protected float rating;
     protected String name;
     protected String genre;
-    protected ArrayList<String> watchlists;
+    protected ArrayList<Watchlist> watchlists;
     protected LocalDate datewatched;
 
     public VisualEntertainment(float rating, String name, String genre) {
         this.datewatched = LocalDate.now();
-        this.watchlists = new ArrayList<String>();
+        this.watchlists = new ArrayList<Watchlist>();
         this.rating = rating;
         this.name = name;
         this.genre = genre;
@@ -35,7 +38,7 @@ public abstract class VisualEntertainment {
     }
 
     // EFFECTS: gets the watchlists the movie is part of
-    public ArrayList<String> getWatchlists() {
+    public ArrayList<Watchlist> getWatchlists() {
         return this.watchlists;
     }
 
@@ -43,12 +46,26 @@ public abstract class VisualEntertainment {
         this.datewatched = localdate;
     }
 
-    public void setWatchlist(String name) {
-        this.watchlists.add(name);
-    }
+    public void addWatchlist(Watchlist watchlist) throws AlreadyInWatchlist {
+        if (!(watchlists.contains(watchlist))) {
+            watchlists.add(watchlist);
+            watchlist.addTitle(this);
+        }
+            else {
+            throw new AlreadyInWatchlist();
+            }
+        }
 
-    public void removeWatchlist(String name) {
-        this.watchlists.remove(name);
+    public void removeWatchlist(Watchlist watchlist) throws NotInTheWatchlist {
+        if (!(watchlists.contains(watchlist))) {
+            watchlists.remove(watchlist);
+            watchlist.removeTitle(this);
+        }
+            else {
+                throw new NotInTheWatchlist();
+            }
+
+
     }
 
     protected abstract void displaydetails();

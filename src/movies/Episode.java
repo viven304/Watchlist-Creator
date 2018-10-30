@@ -1,5 +1,7 @@
 package movies;
 
+import java.util.Objects;
+
 public class Episode extends VisualEntertainment {
     private TVShow tvShow;
 
@@ -21,4 +23,5 @@ public class Episode extends VisualEntertainment {
         System.out.println("Genre: " + super.genre);
         System.out.println("Rating: " + super.rating);
     }
+
 }

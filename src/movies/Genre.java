@@ -4,10 +4,10 @@ import java.util.ArrayList;
 
 
 public class Genre {
-    public ArrayList<Movie> GenreMovies = new ArrayList<>();
+    public ArrayList<VisualEntertainment> GenreMovies = new ArrayList<>();
     public String genreName;
 
-    public void Genre(String genreName, ArrayList<Movie> GenreMovies) {
+    public void Genre(String genreName, ArrayList<VisualEntertainment> GenreMovies) {
         this.genreName = genreName;
         this.GenreMovies = GenreMovies;
     }
