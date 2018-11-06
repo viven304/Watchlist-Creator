@@ -55,8 +55,7 @@ public class Watchlist implements Load, Save {
             if (!(this.list.contains(title))) {
                 this.list.add(title);
                 title.addWatchlist(this);
-            }
-            else {
+            } else {
                 throw new AlreadyInWatchlist();
             }
         }
@@ -72,8 +71,7 @@ public class Watchlist implements Load, Save {
         if (this.list.contains(title)) {
             this.list.remove(title);
             title.removeWatchlist(this);
-        }
-        else {
+        } else {
             throw new NotInTheWatchlist();
         }
     }
@@ -120,22 +118,12 @@ public class Watchlist implements Load, Save {
     public void load(MovieDatabase movieDatabase, TVShowDatabase tvShowDatabase, String filename) throws IOException, AlreadyInWatchlist {
         List<String> lines = Files.readAllLines(Paths.get(filename));
         for (String line : lines) {
-            this.addTitle(movieDatabase.searchformoviebyname(line));
-            this.addTitle(tvShowDatabase.searchforTVShowbyname(line));
-          //  this.addTitle(tvShowDatabase.searchforTVEpisodeByName(line));
+            this.addTitle(movieDatabase.searchfortitlebyname(line));
+            this.addTitle(tvShowDatabase.searchfortitlebyname(line));
+            this.addTitle(tvShowDatabase.searchforTVEpisodeByName(line));
         }
     }
 
-
-    public void wouldYouLikeToKnowHowFar() {
-        Scanner scanner = new Scanner(System.in);
-        String choice = "";
-        System.out.println("Would you like to know how far along are you?");
-        choice = scanner.nextLine();
-        if (choice.equals("yes")) {
-
-        }
-    }
 
     public void namingWatchlist() {
         Scanner scanner = new Scanner(System.in);
@@ -148,34 +136,18 @@ public class Watchlist implements Load, Save {
 
 
     private void addTitlesToWatchlistLoopForMovies(MovieDatabase movieDatabase) {
+        //    addTitlesToWatchlistLoopGeneral(movieDatabase);
         String moviename = "";
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
             System.out.println("Which movie would you like to add");
             moviename = scanner.nextLine();
-            for (VisualEntertainment m : movieDatabase.getMovies()) {
+            for (VisualEntertainment m : movieDatabase.getTitles()) {
                 if (moviename.equals(m.getName())) {
                     System.out.println("Found the movie!");
                     m.displaydetails();
-                    String answerchoice = "";
-                    System.out.println("Would you like to [1] add or [2] remove this movie to your watchlist?");
-                    answerchoice = scanner.nextLine();
-                    if (answerchoice.equals("1")) {
-                        try {
-                            this.addTitle(m);
-                        } catch (AlreadyInWatchlist alreadyInWatchlist) {
-                            System.out.println("Already in Watchlist");
-                        }
-
-                    } else if (answerchoice.equals("2")) {
-                        try {
-                            this.removeTitle(m);
-                        } catch (NotInTheWatchlist notInTheWatchlist) {
-                            System.out.println("Not in the watchlist");
-                        }
-
-                    }
+                    AddAndRemoveTitles(m);
                 }
             }
 
@@ -187,12 +159,14 @@ public class Watchlist implements Load, Save {
     }
 
     private void addingTitlesToWatchlistLoopForTVShows(TVShowDatabase tvShowDatabase) {
+
+        //     addTitlesToWatchlistLoopGeneral(tvShowDatabase);
         String tvname = "";
         Scanner scanner = new Scanner(System.in);
         while (true) {
             System.out.println("Which show would you like to add");
             tvname = scanner.nextLine();
-            for (TVShow ts : tvShowDatabase.getShows()) {
+            for (VisualEntertainment ts : tvShowDatabase.getTitles()) {
                 if (tvname.equals(ts.getName())) {
                     System.out.println("Found the show!");
                     ts.displaydetails();
@@ -201,67 +175,9 @@ public class Watchlist implements Load, Save {
                     String answerchoice3 = "";
                     answerchoice3 = scanner.nextLine();
                     if (answerchoice3.equals("yes")) {
-                        System.out.println("enter season");
-                        String num = "";
-                        num = scanner.nextLine();
-                        if (ts.getEpisodes().containsKey(num)) {
-                            List<Episode> eps = ts.getEpisodes().get(num);
-                            String answerchoice4 = "";
-                            System.out.println("Enter episode name");
-                            answerchoice4 = scanner.nextLine();
-                            for (Episode e: eps) {
-                                if (answerchoice4.equals(e.name)) {
-                                    System.out.println("Found the episode!");
-                                    String answerchoice2 = "";
-                                    System.out.println("Would you like to add this [1] episode or [2] remove the episode from your watchlist?");
-                                    answerchoice2 = scanner.nextLine();
-                                    if (answerchoice2.equals("1")) {
-                                        try {
-                                            this.addTitle(e);
-                                        } catch (AlreadyInWatchlist alreadyInWatchlist) {
-                                            System.out.println("Already in watchlist");
-                                        }
-                                        String choice2 = "";
-                                        System.out.println("Would you like to know far you are in this show?");
-                                        choice2 = scanner.nextLine();
-                                        if (choice2.equals("yes")) {
-                                            howFarAlong(ts);
-                                        }
-                                    } else if (answerchoice2.equals("2")) {
-                                        try {
-                                            this.removeTitle(e);
-                                        } catch (NotInTheWatchlist notInTheWatchlist) {
-                                            System.out.println("Not in the watchlist");
-                                        }
-                                    }
-                                }
-                            }
-                        } else if (answerchoice.equals("2")) {
-                            try {
-                                this.addTitle(ts);
-                            } catch (AlreadyInWatchlist alreadyInWatchlist) {
-                                System.out.println("Already in Watchlist");
-                            }
-                        }
-                    }
-                    else {
-                        System.out.println("Would you like to [1] add or [2] remove this tv show to your watchlist?");
-                        answerchoice = scanner.nextLine();
-                        if (answerchoice.equals("1")) {
-                            try {
-                                this.addTitle(ts);
-                            } catch (AlreadyInWatchlist alreadyInWatchlist) {
-                                System.out.println("Already in Watchlist");
-                            }
-                        } else if (answerchoice.equals("2")) {
-                            try {
-                                this.removeTitle(ts);
-                            } catch (NotInTheWatchlist notInTheWatchlist) {
-                                System.out.println("Not in the watchlist");
-                            } finally {
-                                System.out.println("That's it folks");
-                            }
-                        }
+                        AddAndRemoveEpisodes(ts);
+                    } else {
+                        AddAndRemoveTitles(ts);
                     }
                 }
             }
@@ -272,9 +188,76 @@ public class Watchlist implements Load, Save {
         }
     }
 
+    private void AddAndRemoveEpisodes(VisualEntertainment ts) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("enter season");
+        String num = "";
+        num = scanner.nextLine();
+        if (ts.getEpisodes().containsKey(num)) {
+            List<Episode> eps = ts.getEpisodes().get(num);
+            String answerchoice4 = "";
+            System.out.println("Enter episode name");
+            answerchoice4 = scanner.nextLine();
+            for (Episode e : eps) {
+                if (answerchoice4.equals(e.name)) {
+                    System.out.println("Found the episode!");
+                    AddRemoveAndProgressOfEpisodes(ts, e);
+                }
+            }
+        }
+    }
+
+    private void AddRemoveAndProgressOfEpisodes(VisualEntertainment ts, Episode e) {
+        Scanner scanner = new Scanner(System.in);
+        String answerchoice2 = "";
+        System.out.println("Would you like to add this [1] episode or [2] remove the episode from your watchlist?");
+        answerchoice2 = scanner.nextLine();
+        if (answerchoice2.equals("1")) {
+            try {
+                this.addTitle(e);
+            } catch (AlreadyInWatchlist alreadyInWatchlist) {
+                System.out.println("Already in watchlist");
+            }
+            String choice2 = "";
+            System.out.println("Would you like to know far you are in this show?");
+            choice2 = scanner.nextLine();
+            if (choice2.equals("yes")) {
+                System.out.println(ts.howFarAlong(this) + "%");
+            }
+        } else if (answerchoice2.equals("2")) {
+            try {
+                this.removeTitle(e);
+            } catch (NotInTheWatchlist notInTheWatchlist) {
+                System.out.println("Not in the watchlist");
+            }
+        }
+    }
+
+    private void AddAndRemoveTitles(VisualEntertainment v) {
+        Scanner scanner = new Scanner(System.in);
+        String answerchoice;
+        System.out.println("Would you like to [1] add or [2] remove this tv show to your watchlist?");
+        answerchoice = scanner.nextLine();
+        if (answerchoice.equals("1")) {
+            try {
+                this.addTitle(v);
+            } catch (AlreadyInWatchlist alreadyInWatchlist) {
+                System.out.println("Already in Watchlist");
+            }
+        } else if (answerchoice.equals("2")) {
+            try {
+                this.removeTitle(v);
+            } catch (NotInTheWatchlist notInTheWatchlist) {
+                System.out.println("Not in the watchlist");
+            } finally {
+                System.out.println("That's it folks");
+            }
+        }
+    }
 
 
-    public void addingTitlesToWatchlistLoop(MovieDatabase movieDatabase, TVShowDatabase tvShowDatabase){
+    public void addingTitlesToWatchlistLoop(MovieDatabase movieDatabase, TVShowDatabase
+            tvShowDatabase) {
         Scanner scanner = new Scanner(System.in);
         String choice = "";
         while (true) {
@@ -284,19 +267,14 @@ public class Watchlist implements Load, Save {
 
             if (choice.equals("1")) {
                 addTitlesToWatchlistLoopForMovies(movieDatabase);
-            }
-            else if (choice.equals("2")) {
+            } else if (choice.equals("2")) {
                 addingTitlesToWatchlistLoopForTVShows(tvShowDatabase);
-            }
-            else if (choice.equals("3")) {
+            } else if (choice.equals("3")) {
                 break;
             }
         }
     }
 
-    public void howFarAlong(TVShow tvShow) {
-        System.out.println(tvShow.howFarAlong(this) + "%");
-    }
 
 
 }

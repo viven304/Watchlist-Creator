@@ -12,6 +12,7 @@ public class TVShow extends VisualEntertainment {
         this.episodes = new HashMap<String, List<Episode>>();
     }
 
+    @Override
     public Map<String, List<Episode>> getEpisodes(){
         return this.episodes;
     }
@@ -21,12 +22,16 @@ public class TVShow extends VisualEntertainment {
         }
 
 
+        @Override
     public float howFarAlong(Watchlist watchlist) {
         float numofeps = 0;
         float size = 0;
         for (VisualEntertainment ve: watchlist.getTitles()) {
-            if (episodes.containsValue(ve)) {
-             numofeps++;
+            for (List<Episode> loe: episodes.values()) {
+                if (loe.contains(ve)) {
+                    numofeps++;
+                }
+
             }
         }
         for (List<Episode> le: episodes.values()) {

@@ -5,6 +5,8 @@ import exceptions.NotInTheWatchlist;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public abstract class VisualEntertainment {
     protected float rating;
@@ -20,6 +22,8 @@ public abstract class VisualEntertainment {
         this.name = name;
         this.genre = genre;
     }
+
+    public Map<String, List<Episode>> getEpisodes() {return null;};
 
     // EFFECTS: gets the rating of the movie
     public float getRating() {
@@ -67,6 +71,8 @@ public abstract class VisualEntertainment {
 
 
     }
+
+    public float howFarAlong(Watchlist watchlist){return 0;}
 
     protected abstract void displaydetails();
 

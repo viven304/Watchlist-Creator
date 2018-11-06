@@ -4,20 +4,22 @@ package movies;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TVShowDatabase {
-    private List<TVShow> shows = new ArrayList<>();
+public class TVShowDatabase extends VisualEntertainmentDatabase {
+    private List<VisualEntertainment> shows = new ArrayList<>();
 
-    public void addTVShow(TVShow m) {
-        this.shows.add(m);
+    public TVShowDatabase() {
+        super.titles = shows;
     }
 
-    public List<TVShow> getShows() {
-        return shows;
+    public void addTVShow(VisualEntertainment m) {
+        shows.add(m);
     }
 
-    public TVShow searchforTVShowbyname(String name) {
-        TVShow result = new TVShow(0, "", "");
-        for (TVShow ts : shows) {
+
+    @Override
+    public VisualEntertainment searchfortitlebyname(String name) {
+        VisualEntertainment result = new TVShow(0, "", "");
+        for (VisualEntertainment ts : shows) {
             if (ts.getName().equals(name)) {
                 result = ts;
             }
@@ -25,15 +27,19 @@ public class TVShowDatabase {
         return result;
     }
 
-//    public Episode searchforTVEpisodeByName(String name) {
-//        Episode result = new Episode(0, "", "");
-//        for (TVShow tvs: shows) {
-//            if (tvs.getEpisodes().containsKey(name)) {
-//                result = tvs.getEpisodes().get(name);
-//            }
-//        }
-//        return result;
-//    }
+    public Episode searchforTVEpisodeByName(String name) {
+        Episode result = new Episode(0, "", "");
+        for (VisualEntertainment tvs: shows) {
+            for (List<Episode> loe: tvs.getEpisodes().values()) {
+                for (Episode e: loe) {
+                    if (e.name.equals(name)) {
+                        result = e;
+                    }
+                }
+            }
+        }
+        return result;
+    }
 
 
 }
