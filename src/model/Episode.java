@@ -1,6 +1,4 @@
-package movies;
-
-import java.util.Objects;
+package model;
 
 public class Episode extends VisualEntertainment {
     private TVShow tvShow;

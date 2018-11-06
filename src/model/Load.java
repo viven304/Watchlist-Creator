@@ -1,8 +1,6 @@
-package movies;
+package model;
 
 import exceptions.AlreadyInWatchlist;
-import movies.MovieDatabase;
-import movies.Watchlist;
 
 import java.io.IOException;
 

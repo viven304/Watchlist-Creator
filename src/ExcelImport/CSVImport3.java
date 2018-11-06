@@ -1,6 +1,6 @@
 package ExcelImport;
 
-import movies.Movie;
+import model.Movie;
 
 import java.io.BufferedReader;
 import java.nio.charset.StandardCharsets;

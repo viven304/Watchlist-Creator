@@ -3,8 +3,8 @@ package test;
 import exceptions.AlreadyInWatchlist;
 import exceptions.NotInTheWatchlist;
 import exceptions.WatchlistModifyException;
-import movies.Movie;
-import movies.Watchlist;
+import model.Movie;
+import model.Watchlist;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

@@ -1,4 +1,4 @@
-package movies;
+package model;
 
 import exceptions.AlreadyInWatchlist;
 import exceptions.NotInTheWatchlist;

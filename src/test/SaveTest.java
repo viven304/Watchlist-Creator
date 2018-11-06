@@ -1,7 +1,7 @@
 //package test;
 //
 //import exceptions.AlreadyInWatchlist;
-//import movies.*;
+//import model.*;
 //import org.junit.jupiter.api.BeforeEach;
 //import org.junit.jupiter.api.Test;
 //

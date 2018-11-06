@@ -1,7 +1,7 @@
 package ui;
 
 import exceptions.AlreadyInWatchlist;
-import movies.*;
+import model.*;
 
 import java.io.IOException;
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package movies;
+package model;
 
 import exceptions.AlreadyInWatchlist;
 import exceptions.NotInTheWatchlist;
@@ -34,7 +34,7 @@ public class Watchlist implements Load, Save {
     }
 
 
-    // EFFECTS: gets watchlistinput's movies
+    // EFFECTS: gets watchlistinput's model
     public ArrayList<VisualEntertainment> getTitles() {
         return this.list;
     }
@@ -94,7 +94,7 @@ public class Watchlist implements Load, Save {
 
 
     // MODIFIES: this
-    // EFFECTS: sorts watchlistinput movies by alphabet
+    // EFFECTS: sorts watchlistinput model by alphabet
     //          if they have same alphabet the one added last goes on top
     public void sortWatchlistAlphabetically() {
         //

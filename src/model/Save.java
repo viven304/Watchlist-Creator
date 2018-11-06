@@ -1,4 +1,4 @@
-package movies;
+package model;
 
 import java.io.IOException;
 
