@@ -1,7 +1,7 @@
 package test;
 
-import exceptions.AlreadyInWatchlist;
-import exceptions.NotInTheWatchlist;
+import exceptions.AlreadyInWatchlistException;
+import exceptions.NotInTheWatchlistException;
 import exceptions.WatchlistModifyException;
 import model.Movie;
 import model.Watchlist;
@@ -46,7 +46,7 @@ public class WatchlistTest {
         watchlist.setName("TestWatchlist");
         try {
             watchlist.addTitle(jackie);
-        } catch (AlreadyInWatchlist alreadyInWatchlist) {
+        } catch (AlreadyInWatchlistException alreadyInWatchlistException) {
             fail("wrong exception thrown");
         }
 
@@ -73,13 +73,13 @@ public class WatchlistTest {
         watchlist.setName("TestWatchlist");
         try {
             watchlist.addTitle(jackie);
-        } catch (AlreadyInWatchlist alreadyInWatchlist) {
+        } catch (AlreadyInWatchlistException alreadyInWatchlistException) {
             fail("wrong exception thrown");
         }
         try {
             watchlist.removeTitle(wackie);
             fail("exception not thrown");
-        } catch (NotInTheWatchlist notInTheWatchlist) {
+        } catch (NotInTheWatchlistException notInTheWatchlistException) {
         }
 
         assertEquals(0, watchlist.getTitles().size());
@@ -93,14 +93,14 @@ public class WatchlistTest {
         watchlist.setName("TestWatchlist");
         try {
             watchlist.addTitle(jackie);
-        } catch (AlreadyInWatchlist alreadyInWatchlist) {
+        } catch (AlreadyInWatchlistException alreadyInWatchlistException) {
             fail("wrong exception");
         }
 
         try {
             watchlist.addTitle(jackie);
             fail("Exception not thrown");
-        } catch (AlreadyInWatchlist alreadyInWatchlist) {
+        } catch (AlreadyInWatchlistException alreadyInWatchlistException) {
         }
 
         assertEquals(1, watchlist.getTitles().size());
@@ -111,12 +111,12 @@ public class WatchlistTest {
         watchlist.setName("TestWatchlist");
         try {
             watchlist.addTitle(jackie);
-        } catch (AlreadyInWatchlist alreadyInWatchlist) {
+        } catch (AlreadyInWatchlistException alreadyInWatchlistException) {
             fail("wrong exception thrown");
         }
         try {
             watchlist.addTitle(wackie);
-        } catch (AlreadyInWatchlist alreadyInWatchlist) {
+        } catch (AlreadyInWatchlistException alreadyInWatchlistException) {
             fail("wrong exception thrown");
         }
 

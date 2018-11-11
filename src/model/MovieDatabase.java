@@ -10,21 +10,8 @@ public class MovieDatabase extends VisualEntertainmentDatabase {
         super.titles = movies;
     }
 
-    public void addMovie(Movie m) {
-        this.movies.add(m);
-    }
 
 
-    @Override
-    public VisualEntertainment searchfortitlebyname(String name) {
-        VisualEntertainment result = new Movie(0, "", "");
-        for (VisualEntertainment m: movies) {
-            if (m.getName().equals(name)) {
-                result = m;
-            }
-        }
-        return result;
-    }
 
 }
 

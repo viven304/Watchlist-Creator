@@ -1,7 +1,7 @@
 package model;
 
-import exceptions.AlreadyInWatchlist;
-import exceptions.NotInTheWatchlist;
+import exceptions.AlreadyInWatchlistException;
+import exceptions.NotInTheWatchlistException;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -13,7 +13,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
-public class Watchlist implements Load, Save {
+public class Watchlist extends Subject implements Load, Save {
     private String name;
     private ArrayList<VisualEntertainment> list = new ArrayList<>();
     private LocalDate lastmodified;
@@ -50,13 +50,14 @@ public class Watchlist implements Load, Save {
     //          and adds the watchlistinput's name to the movie
     //          if movie already added do nothing
     //          updates last modified to current date
-    public void addTitle(VisualEntertainment title) throws AlreadyInWatchlist {
-        if (!(title.getName().equals(""))) {
+    public void addTitle(VisualEntertainment title) throws AlreadyInWatchlistException {
+        if (!(title == null)) {
             if (!(this.list.contains(title))) {
                 this.list.add(title);
                 title.addWatchlist(this);
-            } else {
-                throw new AlreadyInWatchlist();
+            }
+            else {
+                throw new AlreadyInWatchlistException();
             }
         }
     }
@@ -67,12 +68,12 @@ public class Watchlist implements Load, Save {
     // EFFECTS: it removes the movie from the watchlistinput
     //          and removes the watchlistinput from the movie
     //          updates last modified to current date
-    public void removeTitle(VisualEntertainment title) throws NotInTheWatchlist {
+    public void removeTitle(VisualEntertainment title) throws NotInTheWatchlistException {
         if (this.list.contains(title)) {
             this.list.remove(title);
             title.removeWatchlist(this);
         } else {
-            throw new NotInTheWatchlist();
+            throw new NotInTheWatchlistException();
         }
     }
 
@@ -115,7 +116,7 @@ public class Watchlist implements Load, Save {
         writer.close();
     }
 
-    public void load(MovieDatabase movieDatabase, TVShowDatabase tvShowDatabase, String filename) throws IOException, AlreadyInWatchlist {
+    public void load(MovieDatabase movieDatabase, TVShowDatabase tvShowDatabase, String filename) throws IOException, AlreadyInWatchlistException {
         List<String> lines = Files.readAllLines(Paths.get(filename));
         for (String line : lines) {
             this.addTitle(movieDatabase.searchfortitlebyname(line));
@@ -201,6 +202,7 @@ public class Watchlist implements Load, Save {
             for (Episode e : eps) {
                 if (answerchoice4.equals(e.name)) {
                     System.out.println("Found the episode!");
+                    e.displaydetails();
                     AddRemoveAndProgressOfEpisodes(ts, e);
                 }
             }
@@ -215,7 +217,7 @@ public class Watchlist implements Load, Save {
         if (answerchoice2.equals("1")) {
             try {
                 this.addTitle(e);
-            } catch (AlreadyInWatchlist alreadyInWatchlist) {
+            } catch (AlreadyInWatchlistException alreadyInWatchlistException) {
                 System.out.println("Already in watchlist");
             }
             String choice2 = "";
@@ -227,7 +229,7 @@ public class Watchlist implements Load, Save {
         } else if (answerchoice2.equals("2")) {
             try {
                 this.removeTitle(e);
-            } catch (NotInTheWatchlist notInTheWatchlist) {
+            } catch (NotInTheWatchlistException notInTheWatchlistException) {
                 System.out.println("Not in the watchlist");
             }
         }
@@ -241,13 +243,13 @@ public class Watchlist implements Load, Save {
         if (answerchoice.equals("1")) {
             try {
                 this.addTitle(v);
-            } catch (AlreadyInWatchlist alreadyInWatchlist) {
+            } catch (AlreadyInWatchlistException alreadyInWatchlistException) {
                 System.out.println("Already in Watchlist");
             }
         } else if (answerchoice.equals("2")) {
             try {
                 this.removeTitle(v);
-            } catch (NotInTheWatchlist notInTheWatchlist) {
+            } catch (NotInTheWatchlistException notInTheWatchlistException) {
                 System.out.println("Not in the watchlist");
             } finally {
                 System.out.println("That's it folks");

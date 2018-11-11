@@ -20,10 +20,10 @@
 //
 //    @BeforeEach
 //    public void runPrior() {
-//        movieDatabase.addMovie(conjuring);
-//        movieDatabase.addMovie(interstellar);
-//        tvShowDatabase.addTVShow(twd);
-//        tvShowDatabase.addTVShow(got);
+//        movieDatabase.addTitleToDatabase(conjuring);
+//        movieDatabase.addTitleToDatabase(interstellar);
+//        tvShowDatabase.addTitleToDatabase(twd);
+//        tvShowDatabase.addTitleToDatabase(got);
 //    }
 //
 //    @Test

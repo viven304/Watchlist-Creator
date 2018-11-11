@@ -1,6 +1,6 @@
 //package test;
 //
-//import exceptions.AlreadyInWatchlist;
+//import exceptions.AlreadyInWatchlistException;
 //import model.*;
 //import org.junit.jupiter.api.BeforeEach;
 //import org.junit.jupiter.api.Test;
@@ -21,10 +21,10 @@
 //
 //    @BeforeEach
 //    public void runPrior() {
-//        movieDatabase.addMovie(conjuring);
-//        movieDatabase.addMovie(interstellar);
-//        tvShowDatabase.addTVShow(twd);
-//        tvShowDatabase.addTVShow(got);
+//        movieDatabase.addTitleToDatabase(conjuring);
+//        movieDatabase.addTitleToDatabase(interstellar);
+//        tvShowDatabase.addTitleToDatabase(twd);
+//        tvShowDatabase.addTitleToDatabase(got);
 //    }
 //
 //    @Test
@@ -32,7 +32,7 @@
 //        watchlist.save("testsave.txt");
 //        try {
 //            watchlist.load(movieDatabase, tvShowDatabase, "testsave.txt");
-//        } catch (AlreadyInWatchlist alreadyInWatchlist) {
+//        } catch (AlreadyInWatchlistException alreadyInWatchlist) {
 //        }
 //        assertEquals(0, watchlist.getTitles().size());
 //    }

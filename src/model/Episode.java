@@ -16,10 +16,8 @@ public class Episode extends VisualEntertainment {
     }
 
     @Override
-    protected void displaydetails() {
-        System.out.println("Name: " + super.name);
-        System.out.println("Genre: " + super.genre);
-        System.out.println("Rating: " + super.rating);
+    public void update(String name) {
+        System.out.println(name + " has been added!");
     }
 
 }

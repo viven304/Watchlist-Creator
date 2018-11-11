@@ -1,6 +1,6 @@
 package ui;
 
-import exceptions.AlreadyInWatchlist;
+import exceptions.AlreadyInWatchlistException;
 import model.*;
 
 import java.io.IOException;
@@ -27,16 +27,23 @@ public class Main{
     TVShowDatabase tvShowDatabase = new TVShowDatabase();
 
     public Main() throws IOException{
-        movieDatabase.addMovie(conjuring);
-        movieDatabase.addMovie(interstellar);
+        movieDatabase.addObserver(conjuring);
+        movieDatabase.addObserver(interstellar);
+        movieDatabase.addTitleToDatabase(conjuring);
+        movieDatabase.addTitleToDatabase(interstellar);
+
         Scanner scanner = new Scanner(System.in);
         twdeps.add(negan);
         twdeps.add(welost);
         twd.setEpisodes("5",twdeps);
         goteps.add(bob);
         got.setEpisodes("6", goteps);
-        tvShowDatabase.addTVShow(twd);
-        tvShowDatabase.addTVShow(got);
+        tvShowDatabase.addObserver(twd);
+        tvShowDatabase.addObserver(got);
+
+        tvShowDatabase.addTitleToDatabase(twd);
+        tvShowDatabase.addTitleToDatabase(got);
+
         String choice = "";
         while (true) {
             System.out.println("Choose");
@@ -45,7 +52,7 @@ public class Main{
             if (choice.equals("1")) {
                 try {
                     watchlist.load(movieDatabase, tvShowDatabase, "inputfile.txt");
-                } catch (AlreadyInWatchlist alreadyInWatchlist) {
+                } catch (AlreadyInWatchlistException alreadyInWatchlistException) {
                 }
                     watchlist.addingTitlesToWatchlistLoop(movieDatabase, tvShowDatabase);
             } else if (choice.equals("2")) {

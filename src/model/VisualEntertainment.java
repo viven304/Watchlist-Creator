@@ -1,14 +1,14 @@
 package model;
 
-import exceptions.AlreadyInWatchlist;
-import exceptions.NotInTheWatchlist;
+import exceptions.AlreadyInWatchlistException;
+import exceptions.NotInTheWatchlistException;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public abstract class VisualEntertainment {
+public abstract class VisualEntertainment implements AbstractObserver {
     protected float rating;
     protected String name;
     protected String genre;
@@ -50,35 +50,36 @@ public abstract class VisualEntertainment {
         this.datewatched = localdate;
     }
 
-    public void addWatchlist(Watchlist watchlist) throws AlreadyInWatchlist {
+    public void addWatchlist(Watchlist watchlist) throws AlreadyInWatchlistException {
         if (!(watchlists.contains(watchlist))) {
             watchlists.add(watchlist);
             watchlist.addTitle(this);
         }
             else {
-            throw new AlreadyInWatchlist();
+            throw new AlreadyInWatchlistException();
             }
         }
 
-    public void removeWatchlist(Watchlist watchlist) throws NotInTheWatchlist {
+    public void removeWatchlist(Watchlist watchlist) throws NotInTheWatchlistException {
         if (!(watchlists.contains(watchlist))) {
             watchlists.remove(watchlist);
             watchlist.removeTitle(this);
         }
             else {
-                throw new NotInTheWatchlist();
+                throw new NotInTheWatchlistException();
             }
-
-
     }
 
     public float howFarAlong(Watchlist watchlist){return 0;}
 
-    protected abstract void displaydetails();
+    public void displaydetails() {
+        System.out.println("Name: " + name);
+        System.out.println("Genre: " + genre);
+        System.out.println("Rating: " + rating);
+    }
 
     public Boolean isInWatchlist(String watchlistname) {
         return this.watchlists.contains(watchlistname);
     }
-
 
 }

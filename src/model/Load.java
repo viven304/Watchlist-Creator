@@ -1,9 +1,9 @@
 package model;
 
-import exceptions.AlreadyInWatchlist;
+import exceptions.AlreadyInWatchlistException;
 
 import java.io.IOException;
 
 public interface Load {
-    public void load(MovieDatabase movieDatabase, TVShowDatabase tvShowDatabase, String filename) throws IOException, AlreadyInWatchlist;
+    public void load(MovieDatabase movieDatabase, TVShowDatabase tvShowDatabase, String filename) throws IOException, AlreadyInWatchlistException;
 }
