@@ -40,6 +40,8 @@ public class Main{
         got.setEpisodes("6", goteps);
         tvShowDatabase.addObserver(twd);
         tvShowDatabase.addObserver(got);
+        tvShowDatabase.addObserver(negan);
+        tvShowDatabase.addObserver(welost);
 
         tvShowDatabase.addTitleToDatabase(twd);
         tvShowDatabase.addTitleToDatabase(got);

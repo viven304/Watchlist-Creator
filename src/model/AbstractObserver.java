@@ -1,5 +1,5 @@
 package model;
 
 public interface AbstractObserver {
-    void update(String name);
+    float update();
 }

@@ -17,7 +17,7 @@ public class Movie extends VisualEntertainment{
 
 
     @Override
-    public void update(String name) {
-        System.out.println(name + " has been added!");
+    public float update() {
+        return super.rating;
     }
 }
