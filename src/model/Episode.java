@@ -16,8 +16,8 @@ public class Episode extends VisualEntertainment {
     }
 
     @Override
-    public float update() {
-        return super.rating;
+    public void update() {
+        System.out.println("Something has been added");
     }
 
 }

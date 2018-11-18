@@ -53,7 +53,6 @@ public abstract class VisualEntertainment implements AbstractObserver {
     public void addWatchlist(Watchlist watchlist) throws AlreadyInWatchlistException {
         if (!(watchlists.contains(watchlist))) {
             watchlists.add(watchlist);
-            watchlist.addTitle(this);
         }
             else {
             throw new AlreadyInWatchlistException();
@@ -63,7 +62,6 @@ public abstract class VisualEntertainment implements AbstractObserver {
     public void removeWatchlist(Watchlist watchlist) throws NotInTheWatchlistException {
         if (!(watchlists.contains(watchlist))) {
             watchlists.remove(watchlist);
-            watchlist.removeTitle(this);
         }
             else {
                 throw new NotInTheWatchlistException();

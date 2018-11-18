@@ -3,25 +3,28 @@ package model;
 import exceptions.AlreadyInWatchlistException;
 import exceptions.NotInTheWatchlistException;
 
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
-public class Watchlist extends Subject implements Load, Save {
+public class Watchlist extends Subject implements Load, Save, MouseListener {
     private String name;
     private ArrayList<VisualEntertainment> list = new ArrayList<>();
     private LocalDate lastmodified;
+    private MovieDatabase movieDatabase;
+    private TVShowDatabase tvShowDatabase;
+
 
     // EFFECTS: creates a new watchlistinput with given name
     public void Watchlist(String name) throws IOException {
         this.name = name;
-        this.lastmodified = LocalDate.now();
+        this.lastmodified = LocalDate.now();Movie conjuring = new Movie(86, "Conjuring", "Genre");
+
     }
 
     // EFFECTS: gets watchlistinput's name
@@ -54,7 +57,6 @@ public class Watchlist extends Subject implements Load, Save {
         if (!(title == null)) {
             if (!(this.list.contains(title))) {
                 this.list.add(title);
-                title.addWatchlist(this);
             }
             else {
                 throw new AlreadyInWatchlistException();
@@ -71,7 +73,6 @@ public class Watchlist extends Subject implements Load, Save {
     public void removeTitle(VisualEntertainment title) throws NotInTheWatchlistException {
         if (this.list.contains(title)) {
             this.list.remove(title);
-            title.removeWatchlist(this);
         } else {
             throw new NotInTheWatchlistException();
         }
@@ -277,6 +278,45 @@ public class Watchlist extends Subject implements Load, Save {
         }
     }
 
+
+public List<String> displayEntireWatchlist() {
+        List<String> names = new ArrayList<>();
+        for (VisualEntertainment ve: getTitles()) {
+            names.add(ve.name);
+        }
+        return names;
+}
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+//        try {
+//            load(movieDatabase, tvShowDatabase, "inputfile.txt");
+//        } catch (IOException e1) {
+//            e1.printStackTrace();
+//        } catch (AlreadyInWatchlistException e1) {
+//        }
+        System.out.println("Kuch click hua");
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        System.out.println("Kuch click hua");
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+
+    }
 
 
 }

@@ -20,13 +20,9 @@ public class Subject {
         abstractObserverList.remove(abstractObserver);
     }
 
-    public void notifyObservers() {
-        float sumOfRating = 0.0f;
-        float numOfTitles =  abstractObserverList.size();;
+    public void notifyObservers(String name) {
         for (AbstractObserver abstractObserver : abstractObserverList) {
-            sumOfRating = sumOfRating + abstractObserver.update();
+           abstractObserver.update();
         }
-        averagerating = sumOfRating/numOfTitles;
-        System.out.println(averagerating + " is the average rating of the titles in this database");
     }
 }

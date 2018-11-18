@@ -9,7 +9,7 @@ import java.util.Scanner;
 
 
 
-public class Main{
+public class Main {
     Scanner scanner = new Scanner(System.in);
     Movie conjuring = new Movie(86, "Conjuring", "Genre");
     Genre horror = new Genre();

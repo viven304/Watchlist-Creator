@@ -5,11 +5,7 @@ import java.util.ArrayList;
 
 
 public class Movie extends VisualEntertainment{
-    private float rating;
-    private String name;
-    private String genre;
-    private ArrayList<String> watchlists;
-    private LocalDate datewatched;
+
 
     public Movie(float rating, String name, String genre) {
         super(rating, name, genre);
@@ -17,7 +13,7 @@ public class Movie extends VisualEntertainment{
 
 
     @Override
-    public float update() {
-        return super.rating;
+    public void update() {
+        System.out.println("Something has been added");
     }
 }
