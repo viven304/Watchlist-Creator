@@ -279,12 +279,12 @@ public class Watchlist extends Subject implements Load, Save, MouseListener {
     }
 
 
-public List<String> displayEntireWatchlist() {
-        List<String> names = new ArrayList<>();
+public String displayEntireWatchlist() {
+        String s = "";
         for (VisualEntertainment ve: getTitles()) {
-            names.add(ve.name);
+            s = s + "\n" + ve.getName();
         }
-        return names;
+        return s;
 }
 
     @Override

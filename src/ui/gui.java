@@ -1,26 +1,22 @@
 package ui;
 
 import exceptions.AlreadyInWatchlistException;
-import jdk.internal.util.xml.impl.Input;
+import exceptions.NotInTheWatchlistException;
 import model.*;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.PrintStream;
-import java.nio.charset.StandardCharsets;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 
-class gui implements ActionListener, MouseListener {
+class gui {
 
     Movie conjuring = new Movie(86, "Conjuring", "Genre");
     Movie interstellar = new Movie(71, "Interstellar", "Sci-Fi");
-    MovieDatabase movieDatabase = new MovieDatabase();
+    MovieDatabase movieDatabase;
     Watchlist watchlist = new Watchlist();
     TVShow twd = new TVShow(86, "The Walking Dead", "Horror");
     ArrayList<Episode> twdeps = new ArrayList<>();
@@ -29,17 +25,27 @@ class gui implements ActionListener, MouseListener {
     TVShow got = new TVShow(95, "Game of Thrones", "Fantasy");
     ArrayList<Episode> goteps = new ArrayList<>();
     Episode bob = new Episode(99, "Battle of Bastards", "Fantasy");
-    TVShowDatabase tvShowDatabase = new TVShowDatabase();
+    TVShowDatabase tvShowDatabase;
     private static final int INTERVAL = 20;
     private Timer t;
     private JTextArea ta;
-    private JTextField tf;
-    private String name = " ";
-    private Scanner scanner = new Scanner(name);
-
+    private TextField tf;
+    private Scanner scanner;
+    String input;
+    private final PipedInputStream inPipe = new PipedInputStream();
+    private final PipedInputStream outPipe = new PipedInputStream();
+    PrintWriter inWriter;
+    private JButton add;
+    private JButton remove;
+    private JMenuItem m33;
+    private JMenuItem m22;
+    private JMenuItem m11;
 
     public void runBefore() {
-
+        movieDatabase = new MovieDatabase();
+        tvShowDatabase = new TVShowDatabase();
+        scanner = new Scanner(System.in);
+        input = "";
         movieDatabase.addTitleToDatabase(conjuring);
         movieDatabase.addTitleToDatabase(interstellar);
 
@@ -51,11 +57,12 @@ class gui implements ActionListener, MouseListener {
 
         tvShowDatabase.addTitleToDatabase(twd);
         tvShowDatabase.addTitleToDatabase(got);
+
     }
 
 
     public gui() throws IOException {
-        runBefore();
+
 
         //Creating the Frame
         JFrame frame = new JFrame("Watchlist Creator");
@@ -68,21 +75,19 @@ class gui implements ActionListener, MouseListener {
         JMenu m2 = new JMenu("Help");
         mb.add(m1);
         mb.add(m2);
-        JMenuItem m11 = new JMenuItem("New");
-        JMenuItem m22 = new JMenuItem("Save");
-        JMenuItem m33 = new JMenuItem("Load");
+        m11 = new JMenuItem("New");
+        m22 = new JMenuItem("Save");
+        m33 = new JMenuItem("Load");
         m1.add(m11);
         m1.add(m22);
         m1.add(m33);
-        m22.addMouseListener(this);
-        m33.addMouseListener(this);
 
         //Creating the panel at bottom and adding components
         JPanel panel = new JPanel(); // the panel is not visible in output
         JLabel label = new JLabel("Search for title");
-        tf = new JTextField(10); // accepts upto 10 characters
-        JButton add = new JButton("Add");
-        JButton remove = new JButton("Remove");
+        tf = new TextField(10); // accepts upto 10 characters
+        add = new JButton("Add");
+        remove = new JButton("Remove");
         panel.add(label); // Components Added using Flow Layout
         panel.add(label); // Components Added using Flow Layout
         panel.add(tf);
@@ -91,11 +96,31 @@ class gui implements ActionListener, MouseListener {
         // Text Area at the Center
         this.ta = new JTextArea();
 
+        handler handler = new handler();
+        tf.addActionListener(handler);
+        add.addActionListener(handler);
+        remove.addActionListener(handler);
+        m33.addActionListener(handler);
+        m22.addActionListener(handler);
+        m11.addActionListener(handler);
+
+        runBefore();
+//        System.setIn(inPipe);
+//        try {
+//            System.setOut(new PrintStream(new PipedOutputStream(outPipe), true));
+//            inWriter = new PrintWriter(new PipedOutputStream(inPipe), true);
+//        }
+//        catch(IOException e) {
+//            System.out.println("Error: " + e);
+//            return;
+//        }
+
 
         JTextArea textArea = new JTextArea(50, 10);
-        PrintStream printStream = new PrintStream(new CustomOutputStream(textArea));
-        System.setOut(printStream);
-        System.setErr(printStream);
+        textArea.append(watchlist.displayEntireWatchlist());
+//        PrintStream printStream = new PrintStream(new CustomOutputStream(textArea));
+//        System.setOut(printStream);
+//        System.setErr(printStream);
 
 
         //Adding Components to the frame.
@@ -105,33 +130,77 @@ class gui implements ActionListener, MouseListener {
         frame.setVisible(true);
 
 
+//        String choice = "";
+//
+//        while (true) {
+//                System.out.println("Choose");
+//                System.out.println("[1] Load Watchlist [2] New Watchlist [3] quit");
+//                choice = scanner.nextLine();
+//                if (choice.equals("1")) {
+//                    try {
+//                        watchlist.load(movieDatabase, tvShowDatabase, "inputfile.txt");
+//                    } catch (AlreadyInWatchlistException alreadyInWatchlistException) {
+//                    }
+//                    watchlist.addingTitlesToWatchlistLoop(movieDatabase, tvShowDatabase);
+//                } else if (choice.equals("2")) {
+//                    watchlist.namingWatchlist();
+//                    watchlist.addingTitlesToWatchlistLoop(movieDatabase, tvShowDatabase);
+//
+//                } else if (choice.equals("3")) {
+//                    break;
+//                }
+//        }
+//        watchlist.save("inputfile.txt");
+//        System.out.println("thanks for using the WatchListCreator");
 
-        add.addMouseListener(this);
 
-       scannerLoad();
+    }
 
-        String choice = "";
-        while (true) {
-            System.out.println("Choose");
-            System.out.println("[1] Load Watchlist [2] New Watchlist [3] quit");
-            choice = scanner.nextLine();
-            if (choice.equals("1")) {
+
+    private class handler implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+            String s = "";
+            if (e.getSource() == tf) {
+                VisualEntertainment movie = movieDatabase.searchfortitlebyname(e.getActionCommand());
+                s = movie.displayinGui();
+                JOptionPane.showMessageDialog(null, s);
+            } else if (e.getSource() == add) {
+                try {
+                    watchlist.addTitle(movieDatabase.searchfortitlebyname(tf.getText()));
+                    JOptionPane.showMessageDialog(null, "Successful");
+                } catch (AlreadyInWatchlistException e1) {
+                    JOptionPane.showMessageDialog(null, "Already in watchlist");
+                }
+            } else if (e.getSource() == remove) {
+                try {
+                    watchlist.removeTitle(movieDatabase.searchfortitlebyname(tf.getText()));
+                    JOptionPane.showMessageDialog(null, "Successful");
+                } catch (NotInTheWatchlistException e1) {
+                    JOptionPane.showMessageDialog(null, "Not in watchlist");
+                }
+            } else if (e.getSource() == m33) {
                 try {
                     watchlist.load(movieDatabase, tvShowDatabase, "inputfile.txt");
-                } catch (AlreadyInWatchlistException alreadyInWatchlistException) {
+                } catch (IOException e1) {
+                    JOptionPane.showMessageDialog(null, "Error 404");
+                } catch (AlreadyInWatchlistException e1) {
                 }
-                watchlist.addingTitlesToWatchlistLoop(movieDatabase, tvShowDatabase);
-            } else if (choice.equals("2")) {
-                watchlist.namingWatchlist();
-                watchlist.addingTitlesToWatchlistLoop(movieDatabase, tvShowDatabase);
 
-            } else if (choice.equals("3")) {
-                break;
+            }
+            else if (e.getSource() == m22) {
+                try {
+                    watchlist.save("inputfile.txt");
+                } catch (IOException e1) {
+                    JOptionPane.showMessageDialog(null, "Error 404");
+                }
+            }
+            else if (e.getSource() == m11) {
+                watchlist = new Watchlist();
             }
         }
-        watchlist.save("inputfile.txt");
-        System.out.println("thanks for using the WatchListCreator");
-
     }
 
 
@@ -139,39 +208,5 @@ class gui implements ActionListener, MouseListener {
         new gui();
     }
 
-    private void scannerLoad() {
-        if (!(name.equals(""))) {
-           scanner = new Scanner(name);
-        }
-    }
-    @Override
-    public void actionPerformed(ActionEvent e) {
-
-    }
-
-    @Override
-    public void mouseClicked(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mousePressed(MouseEvent e) {
-        name = tf.getText();
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
-
-    }
 
 }

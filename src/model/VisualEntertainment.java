@@ -76,6 +76,11 @@ public abstract class VisualEntertainment implements AbstractObserver {
         System.out.println("Rating: " + rating);
     }
 
+    public String displayinGui() {
+        String s = "";
+        s = "Name: " + name + "\nGenre: " + genre + "\nRating: " + rating;
+        return s;
+    }
     public Boolean isInWatchlist(String watchlistname) {
         return this.watchlists.contains(watchlistname);
     }
