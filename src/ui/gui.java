@@ -9,10 +9,12 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.Scanner;
 
 
-class gui {
+class gui implements Observer {
 
     Movie conjuring = new Movie(86, "Conjuring", "Genre");
     Movie interstellar = new Movie(71, "Interstellar", "Sci-Fi");
@@ -114,10 +116,9 @@ class gui {
 //            System.out.println("Error: " + e);
 //            return;
 //        }
+        watchlist.addObserver(this);
 
 
-        JTextArea textArea = new JTextArea(50, 10);
-        textArea.append(watchlist.displayEntireWatchlist());
 //        PrintStream printStream = new PrintStream(new CustomOutputStream(textArea));
 //        System.setOut(printStream);
 //        System.setErr(printStream);
@@ -126,7 +127,7 @@ class gui {
         //Adding Components to the frame.
         frame.getContentPane().add(BorderLayout.SOUTH, panel);
         frame.getContentPane().add(BorderLayout.NORTH, mb);
-        frame.getContentPane().add(BorderLayout.CENTER, textArea);
+        frame.getContentPane().add(BorderLayout.CENTER, ta);
         frame.setVisible(true);
 
 
@@ -157,16 +158,18 @@ class gui {
     }
 
 
+
     private class handler implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
 
-            String s = "";
+            String s1 = "";
             if (e.getSource() == tf) {
                 VisualEntertainment movie = movieDatabase.searchfortitlebyname(e.getActionCommand());
-                s = movie.displayinGui();
-                JOptionPane.showMessageDialog(null, s);
+                s1 = movie.displayinGui();
+
+                JOptionPane.showMessageDialog(null, s1);
             } else if (e.getSource() == add) {
                 try {
                     watchlist.addTitle(movieDatabase.searchfortitlebyname(tf.getText()));
@@ -189,20 +192,22 @@ class gui {
                 } catch (AlreadyInWatchlistException e1) {
                 }
 
-            }
-            else if (e.getSource() == m22) {
+            } else if (e.getSource() == m22) {
                 try {
                     watchlist.save("inputfile.txt");
                 } catch (IOException e1) {
                     JOptionPane.showMessageDialog(null, "Error 404");
                 }
-            }
-            else if (e.getSource() == m11) {
+            } else if (e.getSource() == m11) {
                 watchlist = new Watchlist();
             }
         }
     }
 
+    @Override
+    public void update(Observable o, Object arg) {
+        ta.setText(watchlist.displayEntireWatchlist());
+    }
 
     public static void main(String args[]) throws IOException {
         new gui();

@@ -12,7 +12,7 @@ import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.*;
 
-public class Watchlist extends Subject implements Load, Save, MouseListener {
+public class Watchlist extends Observable implements Load, Save {
     private String name;
     private ArrayList<VisualEntertainment> list = new ArrayList<>();
     private LocalDate lastmodified;
@@ -23,8 +23,9 @@ public class Watchlist extends Subject implements Load, Save, MouseListener {
     // EFFECTS: creates a new watchlistinput with given name
     public void Watchlist(String name) throws IOException {
         this.name = name;
-        this.lastmodified = LocalDate.now();Movie conjuring = new Movie(86, "Conjuring", "Genre");
-
+        this.lastmodified = LocalDate.now();
+        setChanged();
+        notifyObservers(this);
     }
 
     // EFFECTS: gets watchlistinput's name
@@ -57,6 +58,8 @@ public class Watchlist extends Subject implements Load, Save, MouseListener {
         if (!(title == null)) {
             if (!(this.list.contains(title))) {
                 this.list.add(title);
+                setChanged();
+                notifyObservers(this);
             }
             else {
                 throw new AlreadyInWatchlistException();
@@ -73,6 +76,8 @@ public class Watchlist extends Subject implements Load, Save, MouseListener {
     public void removeTitle(VisualEntertainment title) throws NotInTheWatchlistException {
         if (this.list.contains(title)) {
             this.list.remove(title);
+            setChanged();
+            notifyObservers(this);
         } else {
             throw new NotInTheWatchlistException();
         }
@@ -104,15 +109,9 @@ public class Watchlist extends Subject implements Load, Save, MouseListener {
 
 
     public void save(String filename) throws IOException {
-        List<String> lines = Files.readAllLines(Paths.get(filename));
         PrintWriter writer = new PrintWriter(filename, "UTF-8");
         for (String s : this.printTitlesWithSpace()) {
-            if (!(lines.contains(s))) {
-                lines.add(s);
-            }
-        }
-        for (String line : lines) {
-            writer.println(line);
+            writer.println(s);
         }
         writer.close();
     }
@@ -287,36 +286,9 @@ public String displayEntireWatchlist() {
         return s;
 }
 
-    @Override
-    public void mouseClicked(MouseEvent e) {
-//        try {
-//            load(movieDatabase, tvShowDatabase, "inputfile.txt");
-//        } catch (IOException e1) {
-//            e1.printStackTrace();
-//        } catch (AlreadyInWatchlistException e1) {
-//        }
-        System.out.println("Kuch click hua");
-    }
 
-    @Override
-    public void mousePressed(MouseEvent e) {
-        System.out.println("Kuch click hua");
-    }
 
-    @Override
-    public void mouseReleased(MouseEvent e) {
 
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
-
-    }
 
 
 }
