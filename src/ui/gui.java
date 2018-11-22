@@ -1,6 +1,7 @@
 package ui;
 
 import exceptions.AlreadyInWatchlistException;
+import exceptions.NotFoundException;
 import exceptions.NotInTheWatchlistException;
 import model.*;
 
@@ -46,8 +47,6 @@ class gui implements Observer {
     public void runBefore() {
         movieDatabase = new MovieDatabase();
         tvShowDatabase = new TVShowDatabase();
-        scanner = new Scanner(System.in);
-        input = "";
         movieDatabase.addTitleToDatabase(conjuring);
         movieDatabase.addTitleToDatabase(interstellar);
 
@@ -107,21 +106,7 @@ class gui implements Observer {
         m11.addActionListener(handler);
 
         runBefore();
-//        System.setIn(inPipe);
-//        try {
-//            System.setOut(new PrintStream(new PipedOutputStream(outPipe), true));
-//            inWriter = new PrintWriter(new PipedOutputStream(inPipe), true);
-//        }
-//        catch(IOException e) {
-//            System.out.println("Error: " + e);
-//            return;
-//        }
         watchlist.addObserver(this);
-
-
-//        PrintStream printStream = new PrintStream(new CustomOutputStream(textArea));
-//        System.setOut(printStream);
-//        System.setErr(printStream);
 
 
         //Adding Components to the frame.
@@ -131,55 +116,64 @@ class gui implements Observer {
         frame.setVisible(true);
 
 
-//        String choice = "";
-//
-//        while (true) {
-//                System.out.println("Choose");
-//                System.out.println("[1] Load Watchlist [2] New Watchlist [3] quit");
-//                choice = scanner.nextLine();
-//                if (choice.equals("1")) {
-//                    try {
-//                        watchlist.load(movieDatabase, tvShowDatabase, "inputfile.txt");
-//                    } catch (AlreadyInWatchlistException alreadyInWatchlistException) {
-//                    }
-//                    watchlist.addingTitlesToWatchlistLoop(movieDatabase, tvShowDatabase);
-//                } else if (choice.equals("2")) {
-//                    watchlist.namingWatchlist();
-//                    watchlist.addingTitlesToWatchlistLoop(movieDatabase, tvShowDatabase);
-//
-//                } else if (choice.equals("3")) {
-//                    break;
-//                }
-//        }
-//        watchlist.save("inputfile.txt");
-//        System.out.println("thanks for using the WatchListCreator");
-
-
     }
-
 
 
     private class handler implements ActionListener {
 
+        private VisualEntertainment findTitle() {
+
+            if (!((movieDatabase.searchfortitlebyname(tf.getText())) == (null))) {
+                VisualEntertainment title;
+                title = movieDatabase.searchfortitlebyname(tf.getText());
+                return title;
+            } else if (!((tvShowDatabase.searchfortitlebyname(tf.getText())) == (null))) {
+                VisualEntertainment title;
+                title = tvShowDatabase.searchfortitlebyname(tf.getText());
+                return title;
+
+            } else if (!((tvShowDatabase.searchforTVEpisodeByName(tf.getText())) == (null))) {
+                VisualEntertainment title;
+                title = tvShowDatabase.searchforTVEpisodeByName(tf.getText());
+                return title;
+            }
+            else {
+               VisualEntertainment title = new Movie(0, "", "");
+               return title;
+            }
+        }
+
         @Override
         public void actionPerformed(ActionEvent e) {
+           VisualEntertainment title = findTitle();
 
-            String s1 = "";
             if (e.getSource() == tf) {
-                VisualEntertainment movie = movieDatabase.searchfortitlebyname(e.getActionCommand());
-                s1 = movie.displayinGui();
+//                if (!(movieDatabase.searchfortitlebyname(e.getActionCommand()).equals(null))) {
+//                    VisualEntertainment movie = movieDatabase.searchfortitlebyname(e.getActionCommand());
+//                    s1 = movie.displayinGui();
+//                } else if (!(tvShowDatabase.searchfortitlebyname(e.getActionCommand()).equals(null))) {
+//                    VisualEntertainment tvShow = tvShowDatabase.searchfortitlebyname(e.getActionCommand());
+//                    s1 = tvShow.displayinGui();
+//
+//                } else {
+//                    VisualEntertainment episode = tvShowDatabase.searchforTVEpisodeByName(e.getActionCommand());
+//                    s1 = episode.displayinGui();
+//                }
 
+                String s1 = "";
+
+                s1 = title.displayinGui();
                 JOptionPane.showMessageDialog(null, s1);
             } else if (e.getSource() == add) {
                 try {
-                    watchlist.addTitle(movieDatabase.searchfortitlebyname(tf.getText()));
+                    watchlist.addTitle(title);
                     JOptionPane.showMessageDialog(null, "Successful");
                 } catch (AlreadyInWatchlistException e1) {
                     JOptionPane.showMessageDialog(null, "Already in watchlist");
                 }
             } else if (e.getSource() == remove) {
                 try {
-                    watchlist.removeTitle(movieDatabase.searchfortitlebyname(tf.getText()));
+                    watchlist.removeTitle(title);
                     JOptionPane.showMessageDialog(null, "Successful");
                 } catch (NotInTheWatchlistException e1) {
                     JOptionPane.showMessageDialog(null, "Not in watchlist");
