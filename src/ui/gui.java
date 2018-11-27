@@ -148,17 +148,6 @@ class gui implements Observer {
            VisualEntertainment title = findTitle();
 
             if (e.getSource() == tf) {
-//                if (!(movieDatabase.searchfortitlebyname(e.getActionCommand()).equals(null))) {
-//                    VisualEntertainment movie = movieDatabase.searchfortitlebyname(e.getActionCommand());
-//                    s1 = movie.displayinGui();
-//                } else if (!(tvShowDatabase.searchfortitlebyname(e.getActionCommand()).equals(null))) {
-//                    VisualEntertainment tvShow = tvShowDatabase.searchfortitlebyname(e.getActionCommand());
-//                    s1 = tvShow.displayinGui();
-//
-//                } else {
-//                    VisualEntertainment episode = tvShowDatabase.searchforTVEpisodeByName(e.getActionCommand());
-//                    s1 = episode.displayinGui();
-//                }
 
                 String s1 = "";
 
@@ -193,7 +182,7 @@ class gui implements Observer {
                     JOptionPane.showMessageDialog(null, "Error 404");
                 }
             } else if (e.getSource() == m11) {
-                watchlist = new Watchlist();
+                watchlist.removeAll();
             }
         }
     }

@@ -286,6 +286,12 @@ public String displayEntireWatchlist() {
         return s;
 }
 
+public void removeAll() {
+    list.removeAll(list);
+    setChanged();
+    notifyObservers();
+}
+
 
 
 
